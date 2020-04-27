@@ -1,1 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<scenario name="BSNL B party">
+  <recv request="INVITE" rrs="true" auth="true">
+  <action>
+            <ereg regexp=".*" search_in="hdr" header="Route:" assign_to="21" />
+            <ereg regexp=".*" search_in="hdr" header="Record-Route:" assign_to="22" />
+        </action>
+</recv>
+
+<!-- 100 Trying -->
+<send>
+<![CDATA[
+SIP/2.0 100 Trying
+[last_Via:]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+[last_CSeq:]
+Contact: <sip:[local_ip]:[local_port]>
+Content-Length: 0
+]]>
+</send>
+
+<send>
+<![CDATA[
+SIP/2.0 180 Ringing
+[last_Via:]
+[last_From:]
+[last_To:];tag=[pid][call_number]
+[last_Call-ID:]
+[last_CSeq:]
+Record-Route:[$21]
+Record-Route:[$22]
+Contact: <sip:[local_ip]:[local_port]>
+P-Asserted-Identity: sip:UserB@abc.com
+Content-Length: 0
+]]>
+</send-->
+
+<!-- 200 OK INVITE-->
+<send>
+<![CDATA[
+SIP/2.0 200 OK
+[last_Via:]
+[last_From:]
+[last_To:];tag=[pid][call_number]
+[last_Call-ID:]
+[last_CSeq:]
+Record-Route:[$21]
+Record-Route:[$22]
+Contact: <sip:[local_ip]:[local_port]>
+P-Asserted-Identity: sip:UserB@abc.com
+Content-Type: application/sdp
+Content-Length: [len]
+
+v=0
+o=ccs-0-275-1 111111 555555 IN IP4 [local_ip]
+s=-
+c=IN IP4 [local_ip]
+b=AS:80
+b=RS:1000
+b=RR:3000
+t=0 0
+m=audio 12068 RTP/AVP 96 97
+a=sendrecv
+a=rtpmap:96 AMR/8000
+a=rtpmap:97 AMR-WB/16000
+
+]]>
+</send>
+
+<recv request="ACK" rrs="true"/>
+
+<recv request="BYE" />
+
+
+<send>
+<![CDATA[
+SIP/2.0 200 OK
+[last_Via:]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+[last_CSeq:]
+Contact: <sip:[local_ip]:[local_port]> 
+Content-Length: 0
+
+]]>
+</send>
+
+</scenario>
 
