@@ -19,7 +19,7 @@
       Content-Type: application/sdp
       Max-Forwards: 70
       Allow: INVITE,PRACK,ACK,CANCEL,BYE,UPDATE,PUBLISH,SUBSCRIBE
-      P-Asserted-Identity: sip:abc@abc.com
+      P-Asserted-Identity: sip:UserA@abc.com
       User-Agent: sipp
       Request-Disposition: no-fork
       Content-Length:[len]
