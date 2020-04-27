@@ -16,8 +16,6 @@
       Supported: outbound,path
       Path: <sip:User1@abc.com:[local_port];lr>
       P-Visited-Network-Id: abc.com
-      P-Charging-Vector: icid-value=9d462a3f-d11c-45f0-acfc-9572805c94b2172.30.47.19-pcf1.mavenir.lab
-      P-Access-Network-Info: 3GPP-GERAN;cgi-3gpp=11201003f000a
       User-Agent: sipp
       Authorization: Digest username="User1@abc.com",nonce="",realm="abc.com",uri="abc.com",response=""
       Content-Length: 0
