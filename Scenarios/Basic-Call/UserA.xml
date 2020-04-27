@@ -8,7 +8,7 @@
 
       INVITE sip:UserB@abc.com SIP/2.0
       Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
-      Route: [$2]
+      Route: <sip:abc.com;orig;lr;wrgOrig>
       From: sip:UserA@abc.com;tag=[pid]SIPpTag02[call_number]
       To: sip:UserB@abc.com
       Call-ID: 2000///[call_id]
