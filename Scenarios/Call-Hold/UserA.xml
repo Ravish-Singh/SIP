@@ -1,1 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
 
+<scenario name="A Party">
+
+  <send retrans="500">
+    <![CDATA[
+
+      INVITE sip:UserB@abc.com SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      Route: <sip:abc.com;orig;lr;wrgOrig>
+      From: sip:UserA@abc.com;tag=[pid]SIPpTag02[call_number]
+      To: sip:UserB@abc.com
+      Call-ID: 2000///[call_id]
+      CSeq: [cseq] INVITE
+      Supported: outbound,replaces,199,100rel
+      P-Early-Media: supported
+      Contact: <sip:[local_ip]:[local_port]>
+      Content-Type: application/sdp
+      Max-Forwards: 70
+      Allow: INVITE,PRACK,ACK,CANCEL,BYE,UPDATE,PUBLISH,SUBSCRIBE
+      P-Asserted-Identity: sip:UserA@abc.com
+      User-Agent: sipp
+      Request-Disposition: no-fork
+      Content-Length:[len]
+
+      v=0
+      o=ccs-0-275-1 111111 555555 IN IP4 [local_ip]
+      s=-
+      c=IN IP4 [local_ip]
+      b=AS:80
+      b=RS:1000
+      b=RR:3000
+      t=0 0
+      m=audio 11068 RTP/AVP 96 97
+      a=sendrecv
+      a=rtpmap:96 AMR/8000
+      a=rtpmap:97 AMR-WB/16000
+    ]]>
+	</send>
+
+  <recv response="100" optional="true">
+</recv>
+
+<recv response="180" rrs="true">
+  </recv>
+
+
+<recv response="200" crlf="true">
+<action>
+  <ereg regexp=".*" search_in="hdr" header="Record-Route:" check_it="true" assign_to="3"/>
+  <ereg regexp="sip:[^;&gt;]+" search_in="hdr" header="Contact:" assign_to="4" />
+</action>
+</recv>
+
+<send>
+<![CDATA[
+
+ACK [$4] SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+Route:[$3]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+CSeq: [cseq]  ACK
+Max-Forwards: 70
+Content-Length: 0
+
+]]>
+</send>
+
+
+<pause milliseconds="5000"/>
+
+
+<send>
+<![CDATA[
+
+BYE [$4] SIP/2.0
+Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+Route:[$3]
+[last_From:]
+[last_To:]
+[last_Call-ID:]
+CSeq: [cseq]  BYE
+Max-Forwards: 70
+Content-Length: 0
+
+]]>
+</send>
+
+<recv response="200" crlf="true"/>
+
+</scenario>
